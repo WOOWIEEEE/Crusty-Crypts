@@ -6,7 +6,6 @@ namespace Dungeon
 {
     public  partial class Window
     {
-        //Classes
         class Tile
         {
             public Vector2 Position;
@@ -70,6 +69,7 @@ namespace Dungeon
             {
                 Position = p;
                 State = 0;
+                Direction = 0;
             }
         }
         class Enemy
@@ -99,17 +99,13 @@ namespace Dungeon
             public Vector2 Position;
             public bool IsRight;
             public bool IsWalk;
-
-            public bool Up;
-            public bool Down;
             public bool Dead;
-            public bool Left;
-            public bool Enter;
-            public bool Right;
 
             public int MaxHealth;
             public int CurHealth;
             public int CurKey;
+            public int MaxMove;
+            public int CurMove;
 
             public Player(Vector2 p)
             {
@@ -118,6 +114,30 @@ namespace Dungeon
                 CurHealth = 4;
                 IsRight = true;
                 IsWalk = false;
+                MaxMove = 1;
+                CurMove = 0;
+            }
+        }
+        class Block
+        {
+            public Vector2 Position;
+            public int ID;
+            public Block(Vector2 p, int i)
+            {
+                Position = p;
+                ID = i;
+            }
+        }
+        class Bullet
+        {
+            public Vector2 Position;
+            public Vector2 Velocity;
+            public int Direction;
+            public Bullet(Vector2 p, Vector2 v, int d)
+            {
+                Position = p;
+                Velocity = v;
+                Direction = d;
             }
         }
         class World
@@ -126,6 +146,8 @@ namespace Dungeon
             public List<Light> LightList;
             public List<Spike> SpikeList;
             public List<Enemy> EnemyList;
+            public List<Block> BlockList;
+            public List<Bullet> BulletList;
             public int MaxRoom;
             public int Seed;
             public bool MapNonLinear;
@@ -143,6 +165,9 @@ namespace Dungeon
                 Seed = s;
                 SpikeList = new List<Spike>();
                 LightList = new List<Light>();
+                EnemyList = new List<Enemy>();
+                BlockList = new List<Block>();
+                BulletList = new List<Bullet>();
                 CrossBowList = new List<CrossBow>();
 
                 player = new Player(new Vector2(50, 50));
@@ -151,6 +176,7 @@ namespace Dungeon
 
                 MapSize = new Vector2(100, 100);
                 Map = new int[(int)MapSize.X, (int)MapSize.Y];
+                Rev = new int[(int)MapSize.X, (int)MapSize.Y];
                 Mod = new int[(int)MapSize.X, (int)MapSize.Y];
             }
         }

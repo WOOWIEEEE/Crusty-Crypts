@@ -9,7 +9,32 @@ namespace Dungeon
 {
     partial class Window
     {
-        //Draw Functions
+        Dictionary<char, Character> CharList;
+        Dictionary<string, Texture> TextureList;
+
+        double ToNDC(double x, int n)
+        {
+            return 2 * x / n - 1;
+        }
+
+        Vector2 Rotate(Vector2 P, Vector2 C, double angle)
+        {
+            float Sin = (float)Math.Sin(angle);
+            float Cos = (float)Math.Cos(angle);
+            Vector2 D = P - C;
+            return new Vector2(D.X * Cos - D.Y * Sin, D.X * Sin + D.Y * Cos) + C;
+        }
+
+        Color Lighting(Vector2 p)
+        {
+            int a = 255;
+            for (int i = 0; i < w.LightList.Count(); i++)
+            {
+                a = Math.Max(Math.Min((int)Math.Round(Vector2.DistanceSquared(w.LightList[i].Position, p) / w.LightList[0].Strength), a), 0);
+            }
+            return Color.FromArgb(a, 0, 0, 0);
+        }
+
         void DrawUI()
         {
             GL.Translate(ToNDC(1232, Width), 0, 0);
@@ -25,6 +50,18 @@ namespace Dungeon
                 }
             }
             DrawTexture(new Vector2(0, -4 + Height - (w.player.MaxHealth + 1) * 32), new Vector2(4f, 4f), TextureList["Key"], Color.White, 0);
+            for (int i = 0; i < w.player.MaxMove; i++)
+            {
+                int n = w.player.MaxMove - i;
+                if (n <= w.player.CurMove)
+                {
+                    DrawTexture(new Vector2(0, -4 + Height - (w.player.MaxHealth + 2) * 32 - i * 32), new Vector2(4f, 4f), TextureList["Boot2"], Color.White, 0);
+                }
+                else
+                {
+                    DrawTexture(new Vector2(0, -4 + Height - (w.player.MaxHealth + 2) * 32 - i * 32), new Vector2(4f, 4f), TextureList["Boot1"], Color.White, 0);
+                }
+            }
             DrawText("x" + w.player.CurKey, new Vector2(32, -4 + Height - (w.player.MaxHealth + 1) * 32), 20f, 0, w.player.CurKey == 0 ? Color.Red : Color.White);
             GL.LoadIdentity();
         }
@@ -157,11 +194,45 @@ namespace Dungeon
                     case 3: ID = "Spike14"; break;
                 }
                 DrawTexture(new Vector2(w.SpikeList[i].Position.X - w.CameraPos.X, 10 - w.SpikeList[i].Position.Y + w.CameraPos.Y) * 32, new Vector2(4f, 4f), TextureList[ID], c, 0);
-            }
+            }       
             for (int i = 0; i < w.CrossBowList.Count(); i++)
             {
                 if (w.LightMap[(int)w.CrossBowList[i].Position.Y, (int)w.CrossBowList[i].Position.X] != 1) continue;
-                DrawTexture(new Vector2(w.CrossBowList[i].Position.X - w.CameraPos.X, 10 - w.CrossBowList[i].Position.Y + w.CameraPos.Y) * 32, new Vector2(4f, 4f), TextureList["Crossbow1"], c, 0);
+                string ID = "";
+                double angle = 0;
+                switch (w.CrossBowList[i].State)
+                {
+                    case 0: ID = "Crossbow1"; break;
+                    case 1: ID = "Crossbow2"; break;
+                    case 2: ID = "Crossbow3"; break;
+                    case 3: ID = "Crossbow4"; break;
+                }
+                switch (w.CrossBowList[i].Direction)
+                {
+                    case 0: angle = Math.PI; break;
+                    case 1: angle = Math.PI / 2; break;
+                    case 2: angle = 0; break;
+                    case 3: angle = Math.PI * 3 / 2; break;
+                }
+                DrawTexture(new Vector2(w.CrossBowList[i].Position.X - w.CameraPos.X, 10 - w.CrossBowList[i].Position.Y + w.CameraPos.Y) * 32, new Vector2(4f, 4f), TextureList[ID], c, angle);
+            }
+            for (int i = 0; i < w.BulletList.Count(); i++)
+            {
+                if (w.LightMap[(int)w.BulletList[i].Position.Y, (int)w.BulletList[i].Position.X] != 1) continue;
+                double angle = 0;
+                switch (w.BulletList[i].Direction)
+                {
+                    case 0: angle = Math.PI; break;
+                    case 1: angle = Math.PI / 2; break;
+                    case 2: angle = 0; break;
+                    case 3: angle = Math.PI * 3 / 2; break;
+                }
+                DrawTexture(new Vector2(w.BulletList[i].Position.X - w.CameraPos.X, 10 - w.BulletList[i].Position.Y + w.CameraPos.Y) * 32, new Vector2(4f, 4f), TextureList["Bolt"], c, angle);
+            }
+            for (int i = 0; i < w.BlockList.Count(); i++)
+            {
+                if (w.LightMap[(int)w.BlockList[i].Position.Y, (int)w.BlockList[i].Position.X] != 1) continue;
+                DrawTexture(new Vector2(w.BlockList[i].Position.X - w.CameraPos.X, 10 - w.BlockList[i].Position.Y + w.CameraPos.Y) * 32, new Vector2(4f, 4f), TextureList["Block1"], c, 0);
             }
             for (int i = 0; i < w.EnemyList.Count(); i++)
             {
