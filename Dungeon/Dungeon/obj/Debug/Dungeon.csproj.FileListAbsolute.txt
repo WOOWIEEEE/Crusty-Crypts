@@ -1,0 +1,13 @@
+C:\Users\Luke\Desktop\Dungeon\Dungeon\bin\Debug\OpenTK.dll
+C:\Users\Luke\Desktop\Dungeon\Dungeon\bin\Debug\OpenTK.pdb
+C:\Users\Luke\Desktop\Dungeon\Dungeon\bin\Debug\OpenTK.xml
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Dungeon.csprojAssemblyReference.cache
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Dungeon.Properties.Resources.resources
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Dungeon.csproj.GenerateResource.cache
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Dungeon.csproj.CoreCompileInputs.cache
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Dungeon.csproj.CopyComplete
+C:\Users\Luke\Desktop\Dungeon\Dungeon\bin\Debug\Crusty Crypts.exe.config
+C:\Users\Luke\Desktop\Dungeon\Dungeon\bin\Debug\Crusty Crypts.exe
+C:\Users\Luke\Desktop\Dungeon\Dungeon\bin\Debug\Crusty Crypts.pdb
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Crusty Crypts.exe
+C:\Users\Luke\Desktop\Dungeon\Dungeon\obj\Debug\Crusty Crypts.pdb
